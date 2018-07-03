@@ -49,7 +49,8 @@
 }
 
 - (void)openLink {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: _article.url]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: _article.url]
+                                       options:@{} completionHandler:nil];
 }
 
 

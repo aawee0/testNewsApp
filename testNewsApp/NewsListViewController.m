@@ -32,20 +32,28 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
+    // set news update timer
     if (_updateTimer == nil) {
-        [NSTimer scheduledTimerWithTimeInterval:10.0
-                                         target:self
-                                       selector:@selector(refreshTableInBackground)
-                                       userInfo:nil
-                                        repeats:YES];
+        _updateTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self
+                                                      selector:@selector(refreshTableInBackground)
+                                                      userInfo:nil repeats:YES];
     }
     
+    // fetch news
     [self refreshTableWithProgressView:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    // stop timer
+    [_updateTimer invalidate];
+    _updateTimer = nil;
 }
 
 #pragma mark - Init methods
@@ -74,7 +82,7 @@
 }
 
 - (void)refreshTableInBackground {
-    NSLog(@" (!) Updating news in background... ");
+    NSLog(@" (!) Updating news in background...");
     [self refreshTableWithProgressView:NO];
 }
 
