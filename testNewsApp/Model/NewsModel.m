@@ -16,8 +16,9 @@
 + (NewsModel *)initWithDictionary:(NSDictionary *)dict {
     NewsModel *newsBlock = [[NewsModel alloc] init];
     
-    NSString *status = dict[@"status"];
-    if (status) newsBlock.status = status;
+    NSDictionary *status = dict[@"status"];
+    if (status && [status isKindOfClass:[NSString class]]) newsBlock.status = (NSString *)status;
+    else newsBlock.status = @"";
     
     NSDictionary *totalResDict = dict[@"totalResults"];
     if (totalResDict && [totalResDict isKindOfClass:[NSNumber class]]) {
@@ -54,19 +55,21 @@
 + (ArticleModel *)initWithDictionary:(NSDictionary *)dict {
     ArticleModel *article = [[ArticleModel alloc] init];
     
-    NSString *author = dict[@"author"];
-    if (author) article.author = author;
+    NSDictionary *author = dict[@"author"];
+    if (author && [author isKindOfClass:[NSString class]]) article.author = (NSString *)author;
+    else article.author = @"";
     
-    NSString *title = dict[@"title"];
-    if (title) article.title = title;
+    NSDictionary *title = dict[@"title"];
+    if (title && [title isKindOfClass:[NSString class]]) article.title = (NSString *)title;
+    else article.title = @"";
     
-    NSString *desc = dict[@"description"];
-    if (desc) article.desc = desc;
+    NSDictionary *desc = dict[@"description"];
+    if (desc && [desc isKindOfClass:[NSString class]]) article.desc = (NSString *)desc;
+    else article.desc = @"";
     
-    NSString *dateStr = dict[@"publishedAt"];
-    if (dateStr) {
-        article.publishedAt = [ArticleModel dateFromCustomString:dateStr];
-        
+    NSDictionary *dateStr = dict[@"publishedAt"];
+    if (dateStr && [dateStr isKindOfClass:[NSString class]]) {
+        article.publishedAt = [ArticleModel dateFromCustomString:(NSString *)dateStr];
     }
     
     return article;

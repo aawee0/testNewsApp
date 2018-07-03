@@ -19,8 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _articleTitleLabel.text = _article.title;
-    _articleDescLabel.text = _article.desc;
+    _articleTitleLabel.text = _article.title ? _article.title : @"";
+    _articleDescLabel.text = _article.desc ? _article.desc : @"";
     // add link
 }
 

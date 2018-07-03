@@ -19,8 +19,8 @@
 }
 
 - (void)updateWithTitle:(NSString *)title andDescription:(NSString *)desc {
-    _cellNewsTitleLabel.text = title;
-    _cellNewsDescLabel.text = desc;
+    _cellNewsTitleLabel.text = title ? title : @"";
+    _cellNewsDescLabel.text = desc ? desc : @"";
 }
 
 @end
