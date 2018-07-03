@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  NewsTableViewCell.h
 //  testNewsApp
 //
 //  Created by Evgeny Patrikeev on 02.07.2018.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface NewsTableViewCell : UITableViewCell
 
+- (void)updateWithTitle:(NSString *)title andDescription:(NSString *)desc;
 
 @end
-

@@ -1,14 +1,11 @@
-//
-//  AppDelegate.m
-//  testNewsApp
-//
-//  Created by Evgeny Patrikeev on 02.07.2018.
-//  Copyright © 2018 Evgeny Patrikeev. All rights reserved.
-//
 
 #import "AppDelegate.h"
 
+#import "NewsListViewController.h"
+
 @interface AppDelegate ()
+
+@property (strong, nonatomic) UINavigationController *navigationController;
 
 @end
 
@@ -16,7 +13,15 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    NewsListViewController *newsVC = [[NewsListViewController alloc] init];
+    _navigationController = [[UINavigationController alloc] initWithRootViewController:newsVC];
+    _navigationController.delegate = self;
+    
+    [self.window setRootViewController:_navigationController];
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 

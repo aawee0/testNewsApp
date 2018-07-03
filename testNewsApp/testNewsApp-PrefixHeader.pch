@@ -1,0 +1,9 @@
+
+#ifndef testNewsApp_PrefixHeader_pch
+#define testNewsApp_PrefixHeader_pch
+
+#define NEWSAPI_APIURL                                @"https://newsapi.org/v2/"
+#define APIKEY                                        @"2f1dc9d3d630460c97a392ea57e6599f"
+#define COUNTRY                                       @"ru"
+
+#endif
