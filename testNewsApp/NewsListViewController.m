@@ -61,7 +61,7 @@
 - (void)initTableView {
     _refreshControl = [[UIRefreshControl alloc] init];
     [_tableView addSubview:_refreshControl];
-    [_refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshTableOnPull) forControlEvents:UIControlEventValueChanged];
     
     UINib *nib = [UINib nibWithNibName:@"NewsTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"newsTableViewCell"];
@@ -76,7 +76,7 @@
 
 #pragma mark - Update methods
 
-- (void)refreshTable {
+- (void)refreshTableOnPull {
     [_refreshControl endRefreshing];
     [self refreshTableWithProgressView:YES];
 }
