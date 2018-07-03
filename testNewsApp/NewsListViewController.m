@@ -35,7 +35,7 @@
 
     // set news update timer
     if (_updateTimer == nil) {
-        _updateTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self
+        _updateTimer = [NSTimer scheduledTimerWithTimeInterval:REFRESH_FREQUENCY target:self
                                                       selector:@selector(refreshTableInBackground)
                                                       userInfo:nil repeats:YES];
     }

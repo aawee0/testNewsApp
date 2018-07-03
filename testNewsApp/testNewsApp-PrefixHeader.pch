@@ -6,4 +6,6 @@
 #define APIKEY                                        @"2f1dc9d3d630460c97a392ea57e6599f"
 #define COUNTRY                                       @"ru"
 
+#define REFRESH_FREQUENCY                             30.0
+
 #endif
