@@ -46,6 +46,7 @@
 @property (strong, nonatomic) NSString *author;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *desc;
+@property (strong, nonatomic) NSString *url;
 @property (strong, nonatomic) NSDate *publishedAt;
 
 @end
@@ -66,6 +67,10 @@
     NSDictionary *desc = dict[@"description"];
     if (desc && [desc isKindOfClass:[NSString class]]) article.desc = (NSString *)desc;
     else article.desc = @"";
+    
+    NSDictionary *url = dict[@"url"];
+    if (url && [url isKindOfClass:[NSString class]]) article.url = (NSString *)url;
+    else article.url = @"";
     
     NSDictionary *dateStr = dict[@"publishedAt"];
     if (dateStr && [dateStr isKindOfClass:[NSString class]]) {

@@ -20,6 +20,7 @@
 @property (strong, nonatomic, readonly) NSString *author;
 @property (strong, nonatomic, readonly) NSString *title;
 @property (strong, nonatomic, readonly) NSString *desc;
+@property (strong, nonatomic, readonly) NSString *url;
 @property (strong, nonatomic, readonly) NSDate *publishedAt;
 
 // initialization
