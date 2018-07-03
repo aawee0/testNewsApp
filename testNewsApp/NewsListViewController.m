@@ -9,9 +9,13 @@
 
 @interface NewsListViewController ()
 
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
-@property (nonatomic, strong) NSMutableArray *articlesArray;
+@property (weak, nonatomic) IBOutlet UIView *progressView;
+
+@property (strong, nonatomic) NSMutableArray *articlesArray;
+@property (strong, nonatomic) NSTimer *updateTimer;
 
 @end
 
@@ -29,20 +33,28 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self fetchNewsByCountry:COUNTRY];
+    if (_updateTimer == nil) {
+        [NSTimer scheduledTimerWithTimeInterval:10.0
+                                         target:self
+                                       selector:@selector(refreshTableInBackground)
+                                       userInfo:nil
+                                        repeats:YES];
+    }
+    
+    [self refreshTableWithProgressView:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 #pragma mark - Init methods
 
 - (void)initTableView {
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_tableView addSubview:_refreshControl];
+    [_refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+    
     UINib *nib = [UINib nibWithNibName:@"NewsTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"newsTableViewCell"];
 }
@@ -54,19 +66,41 @@
                                      target:nil action:nil]]; // rename back button
 }
 
-- (void)fetchNewsByCountry:(NSString *)countryName {
+#pragma mark - Update methods
+
+- (void)refreshTable {
+    [_refreshControl endRefreshing];
+    [self refreshTableWithProgressView:YES];
+}
+
+- (void)refreshTableInBackground {
+    NSLog(@" (!) Updating news in background... ");
+    [self refreshTableWithProgressView:NO];
+}
+
+- (void)refreshTableWithProgressView:(BOOL)progressView {
+    [self fetchNewsByCountry:COUNTRY withProgressView:progressView];
+}
+
+#pragma mark - API related
+
+- (void)fetchNewsByCountry:(NSString *)countryName withProgressView:(BOOL)progressView {
+    if (progressView) [self showProgressView:YES];
+    
     [ApiManager fetchNewsForCountryApi:countryName withCompletion:^(NSData *data,
                                                                          NSURLResponse *response,
                                                                          NSError *error) {
+        if (progressView) [self showProgressView:NO];
+        
         if (data) {
-            NSLog(@"(!) Response: %@ ", response);
+            if (progressView) NSLog(@"(!) Response: %@ ", response);
             
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
                                                                  options:NSJSONReadingAllowFragments error:nil];
             
+            if (progressView) NSLog(@"(!) Serialized data: %@ ", dict);
+            
             if (dict) {
-                NSLog(@"(!) Serialized data: %@ ", dict);
-                
                 NewsModel *newsBlock = [NewsModel initWithDictionary:dict];
                 
                 // UI changes
@@ -160,6 +194,12 @@
 
 - (void)showUnknownError {
     [self showAlertWithTitle:@"Oops!" andText:@"Something went wrong... please check your connection and try again." andButtonNamed:@"Ok"];
+}
+
+- (void)showProgressView:(BOOL)show {
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        self.progressView.hidden = !show;
+    });
 }
 
 @end
